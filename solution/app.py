@@ -70,19 +70,17 @@ def index():
 
 @app.route('/check_weather', methods=['POST'])
 def check_weather():
-    try:
-        start_city = request.form['start_city']
-        end_city = request.form['end_city']
-    except:
-        return render_template('error.html')
+    start_city = request.form['start_city']
+    end_city = request.form['end_city']
 
     preferenced_temperature = request.form['temperature']
     preferenced_humidity = request.form['humidity']
     preferenced_wind_speed = request.form['wind_speed']
-
-    start_weather = get_weather(start_city)
-    end_weather = get_weather(end_city)
-
+    try:
+        start_weather = get_weather(start_city)
+        end_weather = get_weather(end_city)
+    except:
+        return render_template('error.html')
     if not start_weather or not end_weather:
         return redirect(url_for('index'))
 
