@@ -13,6 +13,7 @@ API_KEY = os.getenv("ACCUWEATHER_TOKEN")
 def get_weather(city):
     location_url = f"http://dataservice.accuweather.com/locations/v1/cities/search?apikey={API_KEY}&q={city}&language=ru-ru"
     location_data = requests.get(location_url).json()
+    print(location_data)
     if location_data:
         location_key = location_data[0]['Key']
         weather_url = f"http://dataservice.accuweather.com/currentconditions/v1/{location_key}?apikey={API_KEY}&language=ru-ru&details=true"
@@ -76,11 +77,8 @@ def check_weather():
     preferenced_temperature = request.form['temperature']
     preferenced_humidity = request.form['humidity']
     preferenced_wind_speed = request.form['wind_speed']
-    try:
-        start_weather = get_weather(start_city)
-        end_weather = get_weather(end_city)
-    except:
-        return render_template('error.html')
+    start_weather = get_weather(start_city)
+    end_weather = get_weather(end_city)
     if not start_weather or not end_weather:
         return redirect(url_for('index'))
 
