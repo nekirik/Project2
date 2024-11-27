@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Результаты проверки</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h2>Результаты проверки погодных условий</h2>
+      <h3>Начальный город:</h3>
+      <p>{{ start_weather['city'] }}: {{ start_weather['weather_text'] }}</p>
+      <p>Температура: {{ start_weather['temperature'] }}°C</p>
+      <p>Влажность: {{ start_weather['humidity'] }}%</p>
+      <p>Скорость ветра: {{ start_weather['wind_speed'] }} м/с</p>
+      <h4>Соответствие условий согласно параметрам:</h4>
+      <div class="container">
+        {% for key, value in start_conditions.items() %} {% if value %} {% if
+        "не" in value %}
+        <p class="warning">{{ value }}</p>
+        {% else %}
+        <p class="success">{{ value }}</p>
+        {% endif %} {% endif %} {% endfor %}
+      </div>
+
+      <h3>Конечный город:</h3>
+      <p>{{ end_weather['city'] }}: {{ end_weather['weather_text'] }}</p>
+      <p>Температура: {{ end_weather['temperature'] }}°C</p>
+      <p>Влажность: {{ end_weather['humidity'] }}%</p>
+      <p>Скорость ветра: {{ end_weather['wind_speed'] }} м/с</p>
+      <h4>Соответствие условий согласно параметрам:</h4>
+      <div class="container">
+        {% for key, value in end_conditions.items() %} {% if value %} {% if "не"
+        in value %}
+        <p class="warning">{{ value }}</p>
+        {% else %}
+        <p class="success">{{ value }}</p>
+        {% endif %} {% endif %} {% endfor %}
+      </div>
+      <a href="{{ url_for('index') }}">Назад к форме</a>
+    </div>
+  </body>
+</html>

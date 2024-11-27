@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Проверка погодных условий</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <script>
+      function togglePreferences() {
+        const preferences = document.querySelector(".preferences-container");
+        preferences.style.display =
+          preferences.style.display === "block" ? "none" : "block";
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Введите начальный и конечный города</h2>
+      <form action="{{ url_for('check_weather') }}" method="POST">
+        <div class="form-group">
+          <label for="start_city">Начальный город:</label>
+          <input type="text" name="start_city" id="start_city" required />
+        </div>
+        <div class="form-group">
+          <label for="end_city">Конечный город:</label>
+          <input type="text" name="end_city" id="end_city" required />
+        </div>
+        <div>
+          <button type="button" class="btn" onclick="togglePreferences()">
+            Предпочтения
+          </button>
+        </div>
+        <div class="preferences-container">
+          <div class="form-group">
+            <label for="temperature">Желаемая температура (°C):</label>
+            <input
+              type="number"
+              name="temperature"
+              id="temperature"
+              step="0.1"
+              placeholder="Например: 22.5"
+            />
+          </div>
+          <div class="form-group">
+            <label for="humidity">Желаемая влажность (%):</label>
+            <input
+              type="number"
+              name="humidity"
+              id="humidity"
+              step="1"
+              min="0"
+              max="100"
+              placeholder="Например: 50"
+            />
+          </div>
+          <div class="form-group">
+            <label for="wind_speed">Желаемая скорость ветра (м/с):</label>
+            <input
+              type="number"
+              name="wind_speed"
+              id="wind_speed"
+              step="0.1"
+              placeholder="Например: 3.5"
+            />
+          </div>
+        </div>
+        <div class="divider"></div>
+        <button type="submit" class="btn">Проверить погоду</button>
+      </form>
+    </div>
+  </body>
+</html>
