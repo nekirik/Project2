@@ -13,7 +13,6 @@ API_KEY = os.getenv("ACCUWEATHER_TOKEN")
 def get_weather(city):
     location_url = f"http://dataservice.accuweather.com/locations/v1/cities/search?apikey={API_KEY}&q={city}&language=ru-ru"
     location_data = requests.get(location_url).json()
-    print(location_data)
     if location_data:
         location_key = location_data[0]['Key']
         weather_url = f"http://dataservice.accuweather.com/currentconditions/v1/{location_key}?apikey={API_KEY}&language=ru-ru&details=true"
@@ -80,13 +79,16 @@ def check_weather():
     start_weather = get_weather(start_city)
     end_weather = get_weather(end_city)
     if not start_weather or not end_weather:
-        return redirect(url_for('index'))
+        return render_template('error.html', error_message='Один или два города не найдены(или API введено некорректно)')
 
 
-    start_conditions = check_bad_weather(start_weather, preferenced_temperature, preferenced_humidity,
-                                         preferenced_wind_speed)
-    end_conditions = check_bad_weather(end_weather, preferenced_temperature, preferenced_humidity,
-                                       preferenced_wind_speed)
+    try:
+        start_conditions = check_bad_weather(start_weather, preferenced_temperature, preferenced_humidity,
+                                            preferenced_wind_speed)
+        end_conditions = check_bad_weather(end_weather, preferenced_temperature, preferenced_humidity,
+                                        preferenced_wind_speed)
+    except:
+        return render_template('error.html', error_message='Произошла ошибка при работе с API. Возможно был израсходован суточный лимит запросов.')
 
     return render_template('res.html', start_weather=start_weather, end_weather=end_weather,
                            start_conditions=start_conditions, end_conditions=end_conditions)
